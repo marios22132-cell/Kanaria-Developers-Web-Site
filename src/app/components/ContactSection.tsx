@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 
 const contactMethods = ["Phone", "Telegram", "WhatsApp"];
 
+type Status = "idle" | "loading" | "success" | "error";
+
 export default function ContactSection() {
   const [form, setForm] = useState({
     name: "",
@@ -13,12 +15,30 @@ export default function ContactSection() {
     methods: [] as string[],
     message: "",
   });
+  const [status, setStatus] = useState<Status>("idle");
 
   const toggleMethod = (m: string) =>
     setForm((f) => ({
       ...f,
       methods: f.methods.includes(m) ? f.methods.filter((x) => x !== m) : [...f.methods, m],
     }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error();
+      setStatus("success");
+      setForm({ name: "", email: "", phone: "", methods: [], message: "" });
+    } catch {
+      setStatus("error");
+    }
+  };
 
   return (
     <section id="contact" className="border-t border-white/10 px-6 md:px-12 lg:px-20 py-20 md:py-32">
@@ -68,7 +88,7 @@ export default function ContactSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.9, delay: 0.25 }}
           className="space-y-6"
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={handleSubmit}
         >
           {[
             { id: "name", label: "Full Name", placeholder: "Andreas Petrides", type: "text", field: "name" as const },
@@ -81,6 +101,7 @@ export default function ContactSection() {
                 placeholder={f.placeholder}
                 value={form[f.field]}
                 onChange={(e) => setForm((prev) => ({ ...prev, [f.field]: e.target.value }))}
+                required={f.id !== "phone"}
                 className="w-full bg-transparent border border-white/15 text-[#f5f0eb] text-sm font-light px-4 py-3 placeholder-[#f5f0eb]/25 focus:outline-none focus:border-white/40 transition-colors"
               />
             </div>
@@ -106,7 +127,7 @@ export default function ContactSection() {
             <p className="text-[9px] tracking-[0.25em] text-[#f5f0eb]/40 uppercase mb-3">Preferred Contact Methods</p>
             <div className="flex gap-6">
               {contactMethods.map((m) => (
-                <label key={m} className="flex items-center gap-2 cursor-pointer group">
+                <label key={m} className="flex items-center gap-2 cursor-pointer">
                   <div
                     onClick={() => toggleMethod(m)}
                     className={`w-4 h-4 border flex items-center justify-center transition-colors ${
@@ -128,15 +149,36 @@ export default function ContactSection() {
               placeholder="Tell us about your interest and timeline..."
               value={form.message}
               onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
+              required
               className="w-full bg-transparent border border-white/15 text-[#f5f0eb] text-sm font-light px-4 py-3 placeholder-[#f5f0eb]/25 focus:outline-none focus:border-white/40 transition-colors resize-none"
             />
           </div>
 
+          {status === "success" && (
+            <motion.p
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-xs tracking-[0.1em] text-[#c4b5a0]"
+            >
+              ✓ Message sent — we will be in touch shortly.
+            </motion.p>
+          )}
+          {status === "error" && (
+            <motion.p
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-xs tracking-[0.1em] text-red-400/80"
+            >
+              Something went wrong. Please try again or email us directly.
+            </motion.p>
+          )}
+
           <button
             type="submit"
-            className="bg-[#f5f0eb] text-[#121212] text-xs tracking-[0.2em] uppercase px-8 py-4 hover:bg-[#f5f0eb]/90 transition-colors"
+            disabled={status === "loading"}
+            className="bg-[#f5f0eb] text-[#121212] text-xs tracking-[0.2em] uppercase px-8 py-4 hover:bg-[#f5f0eb]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Send Message
+            {status === "loading" ? "Sending..." : "Send Message"}
           </button>
         </motion.form>
       </div>

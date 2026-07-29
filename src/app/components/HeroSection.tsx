@@ -1,20 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex flex-col justify-end pb-16 md:pb-24 overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/hero-bg.svg"
-          alt="Kanaria Residence Interior"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/40 to-[#121212]/20" />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="/videos/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-linear-to-t from-[#121212] via-[#121212]/50 to-[#121212]/10" />
       </div>
 
       <div className="relative z-10 px-6 md:px-12 lg:px-20">

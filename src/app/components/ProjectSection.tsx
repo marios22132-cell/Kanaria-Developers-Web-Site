@@ -47,7 +47,7 @@ export default function ProjectSection() {
         className="relative w-full aspect-[16/9] md:aspect-[2/1] overflow-hidden mb-4"
       >
         <Image
-          src="/images/project-main.svg"
+          src="/images/living_room.jpeg"
           alt="Kanaria Residence — Interior"
           fill
           className="object-cover"
