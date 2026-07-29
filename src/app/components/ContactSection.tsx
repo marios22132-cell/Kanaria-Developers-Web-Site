@@ -5,12 +5,26 @@ import { motion } from "framer-motion";
 
 const contactMethods = ["Phone", "Telegram", "WhatsApp"];
 
+const countryCodes = [
+  { code: "+357", label: "Cyprus +357" },
+  { code: "+30", label: "Greece +30" },
+  { code: "+44", label: "UK +44" },
+  { code: "+49", label: "Germany +49" },
+  { code: "+33", label: "France +33" },
+  { code: "+39", label: "Italy +39" },
+  { code: "+7", label: "Russia +7" },
+  { code: "+972", label: "Israel +972" },
+  { code: "+971", label: "UAE +971" },
+  { code: "+1", label: "USA/Canada +1" },
+];
+
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function ContactSection() {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    countryCode: "+357",
     phone: "",
     methods: [] as string[],
     message: "",
@@ -30,11 +44,11 @@ export default function ContactSection() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, phone: form.phone ? `${form.countryCode} ${form.phone}` : "" }),
       });
       if (!res.ok) throw new Error();
       setStatus("success");
-      setForm({ name: "", email: "", phone: "", methods: [], message: "" });
+      setForm({ name: "", email: "", countryCode: "+357", phone: "", methods: [], message: "" });
     } catch {
       setStatus("error");
     }
@@ -110,9 +124,17 @@ export default function ContactSection() {
           <div>
             <label className="text-[9px] tracking-[0.25em] text-[#f5f0eb]/40 uppercase block mb-2">Phone (Optional)</label>
             <div className="flex gap-2">
-              <div className="border border-white/15 text-sm font-light text-[#f5f0eb]/60 px-4 py-3 whitespace-nowrap">
-                Cyprus +357
-              </div>
+              <select
+                value={form.countryCode}
+                onChange={(e) => setForm((f) => ({ ...f, countryCode: e.target.value }))}
+                className="bg-[#121212] border border-white/15 text-[#f5f0eb]/70 text-sm font-light px-3 py-3 focus:outline-none focus:border-white/40 transition-colors cursor-pointer"
+              >
+                {countryCodes.map((c) => (
+                  <option key={c.code} value={c.code} className="bg-[#1e1e1e]">
+                    {c.label}
+                  </option>
+                ))}
+              </select>
               <input
                 type="tel"
                 placeholder="99 000 000"
