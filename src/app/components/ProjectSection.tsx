@@ -44,15 +44,23 @@ export default function ProjectSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1, delay: 0.2 }}
-        className="relative w-full aspect-[16/9] md:aspect-[2/1] overflow-hidden mb-4"
+        className="relative w-full aspect-[16/9] md:aspect-[2/1] overflow-hidden mb-6 group"
       >
-        <Image
-          src="/images/living_room.jpeg"
-          alt="Kanaria Residence — Interior"
-          fill
-          className="object-cover"
-        />
-        <span className="absolute top-4 left-4 text-[9px] tracking-[0.25em] border border-[#f5f0eb]/40 text-[#f5f0eb]/70 px-3 py-1.5 uppercase">
+        <motion.div
+          className="relative w-full h-full"
+          whileHover={{ scale: 1.04 }}
+          transition={{ duration: 1.1, ease: [0.22, 0.61, 0.36, 1] }}
+        >
+          <Image
+            src="/images/House.jpeg"
+            alt="Kanaria Residence — Exterior"
+            fill
+            priority
+            className="object-cover"
+          />
+        </motion.div>
+        <div className="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-700" />
+        <span className="absolute top-4 left-4 text-[9px] tracking-[0.25em] border border-[#f5f0eb]/40 text-[#f5f0eb]/70 px-3 py-1.5 uppercase bg-[#121212]/25 backdrop-blur-sm">
           Under Construction
         </span>
       </motion.div>
@@ -62,7 +70,7 @@ export default function ProjectSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.9, delay: 0.4 }}
-        className="max-w-xs ml-auto"
+        className="w-full"
       >
         <PhotoGallery />
       </motion.div>

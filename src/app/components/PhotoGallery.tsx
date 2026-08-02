@@ -5,16 +5,26 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 const photos = [
-  { src: "/images/living_room.jpeg", alt: "Kanaria Residence - Living Room" },
-  { src: "/images/living_room_2.jpeg", alt: "Kanaria Residence - Living Room II" },
-  { src: "/images/kitchen.jpeg", alt: "Kanaria Residence - Kitchen" },
-  { src: "/images/bathroom.jpeg", alt: "Kanaria Residence - Bathroom" },
-  { src: "/images/table.jpeg", alt: "Kanaria Residence - Dining Area" },
-  { src: "/images/walkWay.jpeg", alt: "Kanaria Residence - Walkway" },
+  { src: "/images/livingRoom.jpeg", alt: "Kanaria Residence — Living Room" },
+  { src: "/images/livingroom2.jpeg", alt: "Kanaria Residence — Living Room II" },
+  { src: "/images/kitchen.jpeg", alt: "Kanaria Residence — Kitchen" },
+  { src: "/images/kitchen2.jpeg", alt: "Kanaria Residence — Kitchen II" },
+  { src: "/images/kitchen3.jpeg", alt: "Kanaria Residence — Kitchen III" },
+  { src: "/images/eatingRoom.jpeg", alt: "Kanaria Residence — Dining Area" },
+  { src: "/images/Bedroom.jpeg", alt: "Kanaria Residence — Bedroom" },
+  { src: "/images/BedRoom2.jpeg", alt: "Kanaria Residence — Bedroom II" },
+  { src: "/images/Bedroom3.jpeg", alt: "Kanaria Residence — Bedroom III" },
+  { src: "/images/bathroom.jpeg", alt: "Kanaria Residence — Bathroom" },
+  { src: "/images/bathroom3.jpeg", alt: "Kanaria Residence — Bathroom II" },
+  { src: "/images/bathroom4.jpeg", alt: "Kanaria Residence — Bathroom III" },
+  { src: "/images/WolkRoom.jpeg", alt: "Kanaria Residence — Walk-in Wardrobe" },
+  { src: "/images/wolkWay.jpeg", alt: "Kanaria Residence — Walkway" },
+  { src: "/images/architecture.jpeg", alt: "Kanaria Residence — Architecture" },
+  { src: "/images/architecture2.jpeg", alt: "Kanaria Residence — Architecture II" },
 ];
 
-const PER_SET = 3;
-const TOTAL_SETS = Math.floor(photos.length / PER_SET);
+const PER_SET = 6;
+const TOTAL_SETS = Math.ceil(photos.length / PER_SET);
 
 export default function PhotoGallery() {
   const [activeSet, setActiveSet] = useState(0);
@@ -50,17 +60,18 @@ export default function PhotoGallery() {
     return () => window.removeEventListener("keydown", onKey);
   }, [lightbox, closeLightbox, goNext, goPrev]);
 
-  const current = photos.slice(activeSet * PER_SET, activeSet * PER_SET + PER_SET);
-  const currentPhotoIndex = (photo: { src: string }) =>
-    photos.findIndex((p) => p.src === photo.src);
+  const current = Array.from({ length: PER_SET }, (_, i) => {
+    const idx = (activeSet * PER_SET + i) % photos.length;
+    return { ...photos[idx], globalIndex: idx };
+  });
 
   return (
     <>
-      <div className="space-y-3">
+      <div className="space-y-4">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeSet}
-            className="grid grid-cols-3 gap-1.5"
+            className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -68,12 +79,12 @@ export default function PhotoGallery() {
           >
             {current.map((photo, i) => (
               <motion.button
-                key={photo.src}
+                key={`${activeSet}-${photo.src}`}
                 className="relative aspect-[4/3] overflow-hidden bg-[#1e1e1e] group cursor-pointer"
                 initial={{ opacity: 0, y: 10, scale: 0.97 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.8, delay: i * 0.12, ease: [0.25, 0.1, 0.25, 1] }}
-                onClick={() => setLightbox(currentPhotoIndex(photo))}
+                transition={{ duration: 0.8, delay: i * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+                onClick={() => setLightbox(photo.globalIndex)}
                 aria-label={`View ${photo.alt}`}
               >
                 <Image src={photo.src} alt={photo.alt} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
