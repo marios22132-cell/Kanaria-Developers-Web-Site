@@ -13,6 +13,17 @@ type Residence = {
 };
 
 const residences: Residence[] = [
+  { eyebrow: "Floors 1 & 2 · 1 residence per floor",
+    title: "1-Bedroom Apartments",
+    description:
+      "Thoughtfully designed residences offering a refined sense of space and comfort. With clean architectural lines, premium finishes, and private balconies, these apartments are ideal for individuals or couples seeking quality Mediterranean living.",
+    bg: "bg-[#181818]",
+    specs: [
+      { label: "Bedrooms", value: "1" },
+      { label: "Bathrooms", value: "1" },
+      { label: "Area", value: "60 m²" },
+      { label: "Parking", value: "Covered" },
+    ],},
   {
     eyebrow: "Floors 1 & 2 · 3 Residences per Floor",
     title: "2-Bedroom Apartments",

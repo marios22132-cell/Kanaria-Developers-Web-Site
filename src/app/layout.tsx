@@ -15,8 +15,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Kanaria Developers",
-  description: "Luxury Real Estate Development — Paphos, Cyprus",
+  title: 'Kanaria Developers | Premium Real Estate in Paphos',
+  description: 'Kanaria Developers offers luxury residences and premium real estate projects in Paphos, Cyprus.',
 };
 
 export default function RootLayout({

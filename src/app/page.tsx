@@ -4,6 +4,7 @@ import ProjectSection from "./components/ProjectSection";
 import ProjectDetailsSection from "./components/ProjectDetailsSection";
 import AboutSection from "./components/AboutSection";
 import ApproachSection from "./components/ApproachSection";
+import WhyCyprusSection from "./components/WhyCyprusSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 
@@ -16,6 +17,7 @@ export default function Home() {
       <ProjectDetailsSection />
       <AboutSection />
       <ApproachSection />
+      <WhyCyprusSection />
       <ContactSection />
       <Footer />
     </main>
