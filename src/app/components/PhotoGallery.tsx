@@ -19,8 +19,7 @@ const photos = [
   { src: "/images/bathroom4.jpeg", alt: "Kanaria Residence — Bathroom III" },
   { src: "/images/WolkRoom.jpeg", alt: "Kanaria Residence — Walk-in Wardrobe" },
   { src: "/images/wolkWay.jpeg", alt: "Kanaria Residence — Walkway" },
-  { src: "/images/architecture.jpeg", alt: "Kanaria Residence — Architecture" },
-  { src: "/images/architecture2.jpeg", alt: "Kanaria Residence — Architecture II" },
+
 ];
 
 const PER_SET = 6;
